@@ -1,0 +1,37 @@
+CREATE TABLE IF NOT EXISTS project(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    link VARCHAR(255) NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS task(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    text TEXT,
+    date_of_deadline TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS "user"(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    password VARCHAR(255) NOT NULL,
+    "role" VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "role"(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    role_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user2project(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    user_id BIGINT REFERENCES "user"(id),
+    project_id BIGINT REFERENCES project(id),
+    "role" VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS project2task(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    project_id BIGINT REFERENCES project(id),
+    task_id BIGINT REFERENCES task(id)
+);
