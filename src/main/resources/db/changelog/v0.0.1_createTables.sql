@@ -10,10 +10,12 @@ CREATE TABLE IF NOT EXISTS task(
     date_of_deadline TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS "user"(
+CREATE TABLE IF NOT EXISTS users(
     id BIGSERIAL PRIMARY KEY NOT NULL,
     username VARCHAR(255) NOT NULL,
-    email VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
+    activation_code VARCHAR(255) NOT NULL,
+    activated_status BOOLEAN NOT NULL,
     password VARCHAR(255) NOT NULL,
     "role" VARCHAR(255) NOT NULL
 );
@@ -25,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "role"(
 
 CREATE TABLE IF NOT EXISTS user2project(
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    user_id BIGINT REFERENCES "user"(id),
+    user_id BIGINT REFERENCES users(id),
     project_id BIGINT REFERENCES project(id),
     "role" VARCHAR(255)
 );
@@ -34,4 +36,13 @@ CREATE TABLE IF NOT EXISTS project2task(
     id BIGSERIAL PRIMARY KEY NOT NULL,
     project_id BIGINT REFERENCES project(id),
     task_id BIGINT REFERENCES task(id)
+);
+
+CREATE TABLE IF NOT EXISTS token(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    confirmed_at TIMESTAMP,
+    user_id BIGINT REFERENCES users(id) NOT NULL
 );

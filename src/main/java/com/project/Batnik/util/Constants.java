@@ -4,13 +4,21 @@ public class Constants {
 
     //exceptions
     public static final String NOT_VALID_TEXT_MESSAGE = "not valid text message";
-    public static final String USER_NOT_FOUND = "user not  found message";
+    public static final String USER_NOT_FOUND = "user with %s email not found";
+    public static final String EMAIL_NOT_VALID = "email is not valid";
+    public static final String EMAIL_ALREADY_TAKEN = "email is already taken";
+    public static final String FAILED_TO_SEND_EMAIL = "failed to send email";
 
     //common messages
     public static final String EDIT_DATA = "data was successfully edit";
+    public static final String EMAIL_SEND_SUBJECT = "Activation code for Batnik";
+    public static final String EMAIL_SEND_TEXT = "Hello %s! \n" +
+            "Welcome to Batnik. Your activation link: http://localhost:8086/api/v1/acivation/%s";
 
     //user
     public static final String USER_SUCCESSFULLY_DELETED = "user was successfully deleted";
+    public static final String USER_SUCCESSFULLY_ACTIVATED = "user was successfully activated";
+    public static final String USER_REGISTERED = "user was successfully registered";
 
     //project
     public static final String PROJECT_SUCCESSFULLY_DELETED = "project was successfully deleted";

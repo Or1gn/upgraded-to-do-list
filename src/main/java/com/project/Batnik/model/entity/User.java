@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
@@ -31,6 +31,12 @@ public class User implements UserDetails {
 
     @Column(name = "email", unique = true)
     private String email;
+
+    @Column(name = "activation_code")
+    private String activationCode;
+
+    @Column(name = "activated_status")
+    private boolean activatedStatus;
 
     @Column(name = "password")
     private String password;
@@ -46,6 +52,13 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private Set<Project> projects = new HashSet<>();
+
+    public User(String username, String email, String password, Roles role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
