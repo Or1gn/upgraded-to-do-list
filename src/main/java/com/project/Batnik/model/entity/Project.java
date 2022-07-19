@@ -1,6 +1,5 @@
 package com.project.Batnik.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,10 +20,13 @@ public class Project {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "status")
+    private Boolean status;
+
     @ManyToMany(mappedBy = "projects")
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "project_id")
+    @OneToMany(mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();
 
 }

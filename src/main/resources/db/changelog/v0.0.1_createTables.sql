@@ -1,13 +1,21 @@
 CREATE TABLE IF NOT EXISTS project(
     id BIGSERIAL PRIMARY KEY NOT NULL,
     link VARCHAR(255) NOT NULL,
-    description TEXT
+    description TEXT,
+    status BOOLEAN
+);
+
+CREATE TABLE IF NOT EXISTS priority(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    priority_name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS task(
     id BIGSERIAL PRIMARY KEY NOT NULL,
     text TEXT,
-    date_of_deadline TIMESTAMP
+    date_of_deadline TIMESTAMP,
+    priority_id BIGINT REFERENCES priority(id),
+    project_id BIGINT REFERENCES project(id)
 );
 
 CREATE TABLE IF NOT EXISTS users(
@@ -17,12 +25,11 @@ CREATE TABLE IF NOT EXISTS users(
     activation_code VARCHAR(255) NOT NULL,
     activated_status BOOLEAN NOT NULL,
     password VARCHAR(255) NOT NULL,
-    "role" VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS "role"(
-    id BIGSERIAL PRIMARY KEY NOT NULL,
-    role_name VARCHAR(255) NOT NULL
+    "role" VARCHAR(255) NOT NULL,
+    isAccountNonExpired BOOLEAN,
+    isAccountNonLocked BOOLEAN,
+    isCredentialsNonExpired BOOLEAN,
+    isEnabled BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS user2project(
@@ -32,17 +39,6 @@ CREATE TABLE IF NOT EXISTS user2project(
     "role" VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS project2task(
-    id BIGSERIAL PRIMARY KEY NOT NULL,
-    project_id BIGINT REFERENCES project(id),
-    task_id BIGINT REFERENCES task(id)
-);
 
-CREATE TABLE IF NOT EXISTS token(
-    id BIGSERIAL PRIMARY KEY NOT NULL,
-    token VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    expires_at TIMESTAMP NOT NULL,
-    confirmed_at TIMESTAMP,
-    user_id BIGINT REFERENCES users(id) NOT NULL
-);
+
+

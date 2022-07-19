@@ -1,5 +1,6 @@
 package com.project.Batnik.model.entity;
 
+import com.project.Batnik.model.enums.ProjectRole;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,7 +23,6 @@ public class User2Project {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToOne()
-    @JoinColumn(name = "projectRole")
+    @Enumerated(EnumType.STRING)
     private ProjectRole projectRole;
 }

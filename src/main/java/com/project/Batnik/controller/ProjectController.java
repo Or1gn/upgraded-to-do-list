@@ -2,34 +2,47 @@ package com.project.Batnik.controller;
 
 import com.project.Batnik.model.RQ.ProjectRQ;
 import com.project.Batnik.model.RQ.TaskRQ;
+import com.project.Batnik.service.ProjectService;
+import com.project.Batnik.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/vi/project")
+@RequestMapping("/api/v1/project")
 public class ProjectController {
+    private final ProjectService projectService;
+    private final TaskService taskService;
 
     @GetMapping("/projects")
-    public ResponseEntity<?> getAllProjects()
-    {
-        return null;
+    public ResponseEntity<?> getAllProjects() {
+        return ResponseEntity.ok(projectService.getAllProjects());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProject(@PathVariable Long id)
-    {
-        return null;
+    public ResponseEntity<?> getProject(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProjectById(id));
     }
 
-    @PostMapping("/projects")
-    public ResponseEntity<?> addProject(@RequestBody @Valid ProjectRQ projectRQ) { return null; }
+    @PostMapping("/add")
+    public ResponseEntity<?> addProject(@RequestBody
+                                            @Valid ProjectRQ projectRQ) {
+        return ResponseEntity.ok(projectService.addNewProject(projectRQ));
+    }
 
-    @GetMapping("/get_access/{link}")
-    public ResponseEntity<?> getAccessToProject(@RequestBody @Valid String link) { return null; }
+/*    @GetMapping("/get_access/{link}")
+    public ResponseEntity<?> getAccessToProject(@PathVariable
+                                                    @RequestBody
+                                                    @Valid String link) {
+        return ResponseEntity.ok(projectService.getAccessToProject(link));
+    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editProject(
@@ -37,13 +50,12 @@ public class ProjectController {
             @RequestBody @Valid ProjectRQ projectRQ
     )
     {
-        return null;
+        return ResponseEntity.ok(projectService.editProject(id, projectRQ));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProject(@PathVariable Long id)
-    {
-        return null;
+    public ResponseEntity<?> deleteProject(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.deleteProject(id));
     }
 
     @GetMapping("/{project_id}/tasks")
@@ -52,7 +64,7 @@ public class ProjectController {
             @RequestBody @Valid TaskRQ taskRQ
     )
     {
-        return null;
+        return ResponseEntity.ok(taskService.getTask(project_id));
     }
 
     @GetMapping("/{project_id}/tasks/{task_id}")

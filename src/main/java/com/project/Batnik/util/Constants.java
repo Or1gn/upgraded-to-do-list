@@ -8,6 +8,7 @@ public class Constants {
     public static final String EMAIL_NOT_VALID = "email is not valid";
     public static final String EMAIL_ALREADY_TAKEN = "email is already taken";
     public static final String FAILED_TO_SEND_EMAIL = "failed to send email";
+    public static final String REFRESH_TOKEN_IS_MISSING = "refresh token is missing";
 
     //common messages
     public static final String EDIT_DATA = "data was successfully edit";

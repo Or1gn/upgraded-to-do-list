@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 public class TaskService {
     private final TaskRepository taskRepository;
 
-    private Set<TaskDTO> getTasks()
+    public Set<TaskDTO> getTasks()
     {
         return taskRepository.findAll().stream()
                 .map(TaskDTO::getTaskDTO)
                 .collect(Collectors.toSet());
     }
 
-    private TaskDTO getTask(Long id)
+    public TaskDTO getTask(Long id)
     {
         Task task = taskRepository
                 .findById(id)
