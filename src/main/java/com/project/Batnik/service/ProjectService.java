@@ -1,7 +1,6 @@
 package com.project.Batnik.service;
 
 import com.project.Batnik.exception.BadRequestException;
-import com.project.Batnik.exception.UserNotFoundException;
 import com.project.Batnik.model.RQ.ProjectRQ;
 import com.project.Batnik.model.dto.ProjectDTO;
 import com.project.Batnik.model.entity.Project;
@@ -14,12 +13,8 @@ import com.project.Batnik.repository.UserRepository;
 import com.project.Batnik.util.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,12 +59,12 @@ public class ProjectService {
         Project project = projectRepository
                 .findById(id)
                 .orElseThrow(BadRequestException::new);
-        user2ProjectRepository.deleteAllByProjectId(id);
+        user2ProjectRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
         return Constants.PROJECT_SUCCESSFULLY_DELETED;
     }
 
-    /*public String getAccessToProject(String link)
+    public String getAccessToProject(String link)
     {
         Project project = projectRepository
                 .findProjectByLink(link);
@@ -78,15 +73,11 @@ public class ProjectService {
             throw new BadRequestException();
         }
 
-        User user = userRepository.findUserByUsername(authentication.getName());
-        Set<User> users = project.getUsers();
-        users.add(user);
-        project.setUsers(users);
-
-        saveUser2Project(project, ProjectRole.DEVELOPER);
+        User user = userRepository.findUserByUsername(username);
+        saveUser2Project(project, ProjectRole.DEVELOPER, user);
 
         return Constants.GRANTED_ACCESS;
-    }*/
+    }
 
     public String addNewProject(ProjectRQ projectRQ)
     {
@@ -94,23 +85,26 @@ public class ProjectService {
         User user = userRepository.findUserByUsername(username);
         project.setLink(UUID.randomUUID().toString());
         project.setDescription(projectRQ.getDescription());
-        project.setUsers(Set.of(user));
-        //saveUser2Project(project, ProjectRole.PROJECT_LEAD, user);
+        saveUser2Project(project, ProjectRole.PROJECT_LEAD, user);
+        project.setStatus(true);
         projectRepository.save(project);
 
         return Constants.CREATE_PROJECT;
     }
 
     public String getLink(Long id){
-        Project project = projectRepository.findProjectById(id);
-        return project.getLink();
+        User user = userRepository.findUserByUsername(username);
+
+
+
+        return projectRepository.findProjectById(id).getLink();
     }
 
     public void saveUser2Project(Project project, ProjectRole projectRole, User user){
         User2Project user2Project = new User2Project();
         user2Project.setProject(project);
         user2Project.setUser(user);
-        user2Project.setProjectRole(projectRole);
+        user2Project.setRole(projectRole);
         user2ProjectRepository.save(user2Project);
     }
 

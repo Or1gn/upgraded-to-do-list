@@ -3,6 +3,7 @@ package com.project.Batnik.model.dto;
 import com.project.Batnik.model.entity.Project;
 import com.project.Batnik.model.entity.Task;
 import com.project.Batnik.model.entity.User;
+import com.project.Batnik.model.entity.User2Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.Set;
 public class ProjectDTO {
 
     private String description;
-    private Set<User> users;
+    private Set<User2Project> users;
     private Set<Task> tasks;
 
     public static ProjectDTO getProjectDTO(Project project)

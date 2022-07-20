@@ -23,8 +23,8 @@ public class Project {
     @Column(name = "status")
     private Boolean status;
 
-    @ManyToMany(mappedBy = "projects")
-    private Set<User> users = new HashSet<>();
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<User2Project> users = new HashSet<>();
 
     @OneToMany(mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();

@@ -45,13 +45,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Roles role;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user2project",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
-    private Set<Project> projects = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<User2Project> projects = new HashSet<>();
 
     public User(String username, String email, String password, Roles role) {
         this.username = username;
