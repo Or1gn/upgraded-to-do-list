@@ -7,16 +7,13 @@ import com.project.Batnik.model.entity.Project;
 import com.project.Batnik.model.entity.User;
 import com.project.Batnik.model.entity.User2Project;
 import com.project.Batnik.model.enums.ProjectRole;
-import com.project.Batnik.repository.ProjectRepository;
-import com.project.Batnik.repository.User2ProjectRepository;
-import com.project.Batnik.repository.UserRepository;
+import com.project.Batnik.repository.*;
 import com.project.Batnik.util.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +23,21 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final User2ProjectRepository user2ProjectRepository;
+    private final TaskRepository taskRepository;
     private String username;
 
-    public Set<ProjectDTO> getAllProjects()
+    public List<ProjectDTO> getAllProjects()
     {
-        Set<Project> projects = new HashSet<>(projectRepository.findAll());
-        return projects.stream()
-                .map(ProjectDTO::getProjectDTO)
-                .collect(Collectors.toSet());
+        User user = userRepository.findUserByUsername(username);
+        List<Project> projects = projectRepository.findProjectsByIds(
+                user2ProjectRepository.findProjectByUserId(user.getId())
+        );
+        ProjectDTO dto = new ProjectDTO();
+        List<ProjectDTO> projectDTOS = projects.stream()
+                .map(p -> dto.getProjectDTO(p, taskRepository))
+                .toList();
+
+        return projectDTOS;
     }
 
     public ProjectDTO getProjectById(Long id)
@@ -41,7 +45,9 @@ public class ProjectService {
         Project project = projectRepository
                 .findById(id)
                 .orElseThrow(BadRequestException::new);
-        return ProjectDTO.getProjectDTO(project);
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.getProjectDTO(project, taskRepository);
+        return projectDTO;
     }
 
     public String editProject(Long id, ProjectRQ projectRQ)
@@ -94,9 +100,6 @@ public class ProjectService {
 
     public String getLink(Long id){
         User user = userRepository.findUserByUsername(username);
-
-
-
         return projectRepository.findProjectById(id).getLink();
     }
 

@@ -3,7 +3,9 @@ package com.project.Batnik.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -25,8 +27,4 @@ public class Project {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<User2Project> users = new HashSet<>();
-
-    @OneToMany(mappedBy = "project")
-    private Set<Task> tasks = new HashSet<>();
-
 }

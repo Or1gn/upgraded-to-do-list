@@ -2,31 +2,45 @@ package com.project.Batnik.model.dto;
 
 import com.project.Batnik.model.entity.Project;
 import com.project.Batnik.model.entity.Task;
-import com.project.Batnik.model.entity.User;
-import com.project.Batnik.model.entity.User2Project;
-import lombok.AllArgsConstructor;
+import com.project.Batnik.repository.PriorityRepository;
+import com.project.Batnik.repository.TaskRepository;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProjectDTO {
-
     private String description;
-    private Set<User2Project> users;
-    private Set<Task> tasks;
+    private String link;
+    private Boolean status;
+    private List<TaskDTO> tasks;
 
-    public static ProjectDTO getProjectDTO(Project project)
+    public ProjectDTO(String description, String link, Boolean status) {
+        this.description = description;
+        this.link = link;
+        this.status = status;
+    }
+
+    public ProjectDTO getProjectDTO(Project project,
+                                    TaskRepository taskRepository)
     {
         ProjectDTO projectDTO = new ProjectDTO();
 
         projectDTO.setDescription(project.getDescription());
-        projectDTO.setTasks(project.getTasks());
-        projectDTO.setUsers(project.getUsers());
+        projectDTO.setLink(project.getLink());
+        projectDTO.setStatus(project.getStatus());
+        projectDTO.setTasks(getTaskDTOS(taskRepository, project.getId()));
 
         return projectDTO;
     }
+
+    private List<TaskDTO> getTaskDTOS(TaskRepository taskRepository, Long id){
+        List<Task> tasks = taskRepository.findTaskByProject(id);
+        TaskDTO dto = new TaskDTO();
+        return tasks.stream().map(dto::getTaskDTO).toList();
+    }
+
+
 }

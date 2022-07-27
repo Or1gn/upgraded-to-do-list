@@ -21,7 +21,7 @@ public class Task {
     private Timestamp dateOfDeadline;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "proirity_id", referencedColumnName = "id")
+    @JoinColumn(name = "priority_id", referencedColumnName = "id")
     private Priority priority;
 
     @ManyToOne(cascade = CascadeType.ALL)

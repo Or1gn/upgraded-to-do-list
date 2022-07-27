@@ -9,6 +9,7 @@ public class Constants {
     public static final String EMAIL_ALREADY_TAKEN = "email is already taken";
     public static final String FAILED_TO_SEND_EMAIL = "failed to send email";
     public static final String REFRESH_TOKEN_IS_MISSING = "refresh token is missing";
+    public static final String INCORRECT_PRIORITY_NAME = "incorrect priority name";
 
     //common messages
     public static final String EDIT_DATA = "data was successfully edit";
@@ -25,6 +26,10 @@ public class Constants {
     public static final String PROJECT_SUCCESSFULLY_DELETED = "project was successfully deleted";
     public static final String GRANTED_ACCESS = "access was granted";
     public static final String CREATE_PROJECT = "the project was created";
+
+    //task
+    public static final String CREATE_TASK = "the task was created";
+    public static final String ADD_PRIORITY_TO_TASK = "the role was added";
 
 
 }
