@@ -41,7 +41,7 @@ public class ProjectController {
     }
 
     @GetMapping("/get_link/{id}")
-    public ResponseEntity<?> getAccessToProject(@PathVariable Long id) {
+    public ResponseEntity<String> getProjectLink(@PathVariable Long id) {
         return ResponseEntity.ok(projectService.getLink(id));
     }
 

@@ -10,6 +10,7 @@ public class Constants {
     public static final String FAILED_TO_SEND_EMAIL = "failed to send email";
     public static final String REFRESH_TOKEN_IS_MISSING = "refresh token is missing";
     public static final String INCORRECT_PRIORITY_NAME = "incorrect priority name";
+    public static final String INCORRECT_PROJECT_ID = "incorrect project id";
 
     //common messages
     public static final String EDIT_DATA = "data was successfully edit";

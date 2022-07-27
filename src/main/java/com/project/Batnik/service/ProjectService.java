@@ -1,6 +1,7 @@
 package com.project.Batnik.service;
 
 import com.project.Batnik.exception.BadRequestException;
+import com.project.Batnik.exception.IncorrectProjectIdException;
 import com.project.Batnik.model.RQ.ProjectRQ;
 import com.project.Batnik.model.dto.ProjectDTO;
 import com.project.Batnik.model.entity.Project;
@@ -33,11 +34,10 @@ public class ProjectService {
                 user2ProjectRepository.findProjectByUserId(user.getId())
         );
         ProjectDTO dto = new ProjectDTO();
-        List<ProjectDTO> projectDTOS = projects.stream()
+
+        return projects.stream()
                 .map(p -> dto.getProjectDTO(p, taskRepository))
                 .toList();
-
-        return projectDTOS;
     }
 
     public ProjectDTO getProjectById(Long id)
@@ -73,11 +73,8 @@ public class ProjectService {
     public String getAccessToProject(String link)
     {
         Project project = projectRepository
-                .findProjectByLink(link);
-
-        if (project.getLink().isEmpty()) {
-            throw new BadRequestException();
-        }
+                .findProjectByLink(link)
+                .orElseThrow(BadRequestException::new);
 
         User user = userRepository.findUserByUsername(username);
         saveUser2Project(project, ProjectRole.DEVELOPER, user);
@@ -100,6 +97,10 @@ public class ProjectService {
 
     public String getLink(Long id){
         User user = userRepository.findUserByUsername(username);
+        User projectUser = user2ProjectRepository.findUserIdByRoleAndProjectId(id, ProjectRole.PROJECT_LEAD);
+        if (!projectUser.getId().equals(user.getId())){
+            throw new IncorrectProjectIdException();
+        }
         return projectRepository.findProjectById(id).getLink();
     }
 
