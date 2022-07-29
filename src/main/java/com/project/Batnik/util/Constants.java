@@ -11,6 +11,8 @@ public class Constants {
     public static final String REFRESH_TOKEN_IS_MISSING = "refresh token is missing";
     public static final String INCORRECT_PRIORITY_NAME = "incorrect priority name";
     public static final String INCORRECT_PROJECT_ID = "incorrect project id";
+    public static final String PRIORITY_NOT_FOUND = "priority not found";
+    public static final String INCORRECT_TASK_ID = "incorrect task id";
 
     //common messages
     public static final String EDIT_DATA = "data was successfully edit";
@@ -31,6 +33,13 @@ public class Constants {
     //task
     public static final String CREATE_TASK = "the task was created";
     public static final String ADD_PRIORITY_TO_TASK = "the role was added";
+    public static final String TASK_SUCCESSFUL_EDIT = "task successful edit";
+    public static final String TASK_SUCCESSFUL_DELETE = "task successful delete";
+
+    //priority
+    public static final String PRIORITY_SUCCESSFUL_CREATED = "priority successful created";
+    public static final String PRIORITY_SUCCESSFUL_EDIT = "priority successful edit";
+    public static final String PRIORITY_SUCCESSFUL_DELETE = "priority successful delete";
 
 
 }

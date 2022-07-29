@@ -2,7 +2,7 @@ package com.project.Batnik.service;
 
 import com.project.Batnik.exception.BadRequestException;
 import com.project.Batnik.exception.IncorrectProjectIdException;
-import com.project.Batnik.model.RQ.ProjectRQ;
+import com.project.Batnik.model.RQ.ProjectSaveAndChangeRQ;
 import com.project.Batnik.model.dto.ProjectDTO;
 import com.project.Batnik.model.entity.Project;
 import com.project.Batnik.model.entity.User;
@@ -42,6 +42,11 @@ public class ProjectService {
 
     public ProjectDTO getProjectById(Long id)
     {
+        User user = userRepository.findUserByUsername(username);
+        User projectUser = user2ProjectRepository.findUserIdByRoleAndProjectId(id, ProjectRole.PROJECT_LEAD);
+        if (!projectUser.getId().equals(user.getId())){
+            throw new IncorrectProjectIdException();
+        }
         Project project = projectRepository
                 .findById(id)
                 .orElseThrow(BadRequestException::new);
@@ -50,12 +55,12 @@ public class ProjectService {
         return projectDTO;
     }
 
-    public String editProject(Long id, ProjectRQ projectRQ)
+    public String editProject(Long id, ProjectSaveAndChangeRQ projectSaveAndChangeRQ)
     {
         Project project = projectRepository
                 .findById(id)
                 .orElseThrow(BadRequestException::new);
-        project.setDescription(projectRQ.getDescription());
+        project.setDescription(projectSaveAndChangeRQ.getDescription());
         projectRepository.save(project);
         return Constants.EDIT_DATA;
     }
@@ -67,6 +72,7 @@ public class ProjectService {
                 .orElseThrow(BadRequestException::new);
         user2ProjectRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
+        taskRepository.deleteAllByProjectId(id);
         return Constants.PROJECT_SUCCESSFULLY_DELETED;
     }
 
@@ -82,12 +88,12 @@ public class ProjectService {
         return Constants.GRANTED_ACCESS;
     }
 
-    public String addNewProject(ProjectRQ projectRQ)
+    public String addNewProject(ProjectSaveAndChangeRQ projectSaveAndChangeRQ)
     {
         Project project = new Project();
         User user = userRepository.findUserByUsername(username);
         project.setLink(UUID.randomUUID().toString());
-        project.setDescription(projectRQ.getDescription());
+        project.setDescription(projectSaveAndChangeRQ.getDescription());
         saveUser2Project(project, ProjectRole.PROJECT_LEAD, user);
         project.setStatus(true);
         projectRepository.save(project);

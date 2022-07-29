@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectRQ {
+public class ProjectSaveAndChangeRQ {
     @Size(min = 10, message = Constants.NOT_VALID_TEXT_MESSAGE)
     private String description;
 }

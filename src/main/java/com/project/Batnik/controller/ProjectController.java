@@ -1,6 +1,6 @@
 package com.project.Batnik.controller;
 
-import com.project.Batnik.model.RQ.ProjectRQ;
+import com.project.Batnik.model.RQ.ProjectSaveAndChangeRQ;
 import com.project.Batnik.model.RQ.TaskRQ;
 import com.project.Batnik.model.dto.ProjectDTO;
 import com.project.Batnik.service.ProjectService;
@@ -30,8 +30,8 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProject(@RequestBody ProjectRQ projectRQ) {
-        return ResponseEntity.ok(projectService.addNewProject(projectRQ));
+    public ResponseEntity<?> addProject(@RequestBody ProjectSaveAndChangeRQ projectSaveAndChangeRQ) {
+        return ResponseEntity.ok(projectService.addNewProject(projectSaveAndChangeRQ));
     }
 
     @GetMapping("/get_access/{link}")
@@ -48,10 +48,10 @@ public class ProjectController {
     @PutMapping("/{id}")
     public ResponseEntity<?> editProject(
             @PathVariable Long id,
-            @RequestBody @Valid ProjectRQ projectRQ
+            @RequestBody @Valid ProjectSaveAndChangeRQ projectSaveAndChangeRQ
     )
     {
-        return ResponseEntity.ok(projectService.editProject(id, projectRQ));
+        return ResponseEntity.ok(projectService.editProject(id, projectSaveAndChangeRQ));
     }
 
     @DeleteMapping("/{id}")
@@ -59,11 +59,11 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.deleteProject(id));
     }
 
-/*    @GetMapping("/{project_id}/tasks")
+    @GetMapping("/{project_id}/tasks")
     public ResponseEntity<?> getTasks(@PathVariable Long project_id)
     {
         return ResponseEntity.ok(taskService.getTasksByProjectId(project_id));
-    }*/
+    }
 
     @GetMapping("/{project_id}/tasks/{task_id}")
     public ResponseEntity<?> getTask(
@@ -72,17 +72,16 @@ public class ProjectController {
             @RequestBody @Valid TaskRQ taskRQ
     )
     {
-        return null;
+        return ResponseEntity.ok(taskService.getTaskById(task_id));
     }
 
-    @PostMapping("/{project_id}/tasks/{task_id}")
+    @PostMapping("/tasks/{task_id}")
     public ResponseEntity<?> editTask(
-            @PathVariable Long project_id,
             @PathVariable Long task_id,
             @RequestBody @Valid TaskRQ taskRQ
     )
     {
-        return null;
+        return ResponseEntity.ok(taskService.editTask(task_id, taskRQ));
     }
 
     @PostMapping("/tasks/add/{project_id}")
@@ -94,13 +93,10 @@ public class ProjectController {
         return ResponseEntity.ok(taskService.addTask(taskRQ, project_id));
     }
 
-    @DeleteMapping("/{project_id}/tasks/{task_id}")
-    public ResponseEntity<?> deleteTask(
-            @PathVariable Long project_id,
-            @PathVariable Long task_id
-    )
+    @DeleteMapping("/task/{task_id}")
+    public ResponseEntity<?> deleteTask(@PathVariable Long task_id)
     {
-        return null;
+        return ResponseEntity.ok(taskService.deleteTask(task_id));
     }
 
 }
