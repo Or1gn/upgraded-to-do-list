@@ -13,8 +13,8 @@ public class PriorityDTO {
 
     public PriorityDTO getPriorityDTO(Priority priority){
 
-        name = priority.getPriorityName();
-
-        return this;
+        PriorityDTO priorityDTO = new PriorityDTO();
+        priorityDTO.setName(priority.getPriorityName());
+        return priorityDTO;
     }
 }
