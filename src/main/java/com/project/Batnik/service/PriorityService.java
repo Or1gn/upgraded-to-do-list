@@ -7,11 +7,9 @@ import com.project.Batnik.repository.PriorityRepository;
 import com.project.Batnik.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PriorityService {
     private final PriorityRepository priorityRepository;
 
@@ -24,8 +22,9 @@ public class PriorityService {
 
     public PriorityDTO getPriorityById(Long id){
         PriorityDTO priorityDTO = new PriorityDTO();
-        return priorityDTO.getPriorityDTO(priorityRepository.findPriorityById(id)
+        priorityDTO.getPriorityDTO(priorityRepository.findPriorityById(id)
                 .orElseThrow(PriorityNotFoundException::new));
+        return priorityDTO;
     }
 
     public String editPriority(Long id, PriorityDTO priorityDTO){

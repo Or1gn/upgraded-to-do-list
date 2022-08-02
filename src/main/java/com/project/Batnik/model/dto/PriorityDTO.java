@@ -12,7 +12,6 @@ public class PriorityDTO {
     private String name;
 
     public PriorityDTO getPriorityDTO(Priority priority){
-
         PriorityDTO priorityDTO = new PriorityDTO();
         priorityDTO.setName(priority.getPriorityName());
         return priorityDTO;

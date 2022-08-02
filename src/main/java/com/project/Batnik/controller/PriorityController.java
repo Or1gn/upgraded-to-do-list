@@ -2,6 +2,7 @@ package com.project.Batnik.controller;
 
 import com.project.Batnik.model.dto.PriorityDTO;
 import com.project.Batnik.service.PriorityService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/priority")
+@SecurityRequirement(name = "Bearer authentication")
 public class PriorityController {
     private final PriorityService priorityService;
 

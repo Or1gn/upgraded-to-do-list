@@ -5,6 +5,7 @@ import com.project.Batnik.model.RQ.TaskRQ;
 import com.project.Batnik.model.dto.ProjectDTO;
 import com.project.Batnik.service.ProjectService;
 import com.project.Batnik.service.TaskService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/project")
+@SecurityRequirement(name = "Bearer authentication")
 public class ProjectController {
     private final ProjectService projectService;
     private final TaskService taskService;

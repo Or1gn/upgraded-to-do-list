@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -47,14 +48,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/api/v1/login**", "/api/v1/auth/registration",
-                        "api/v1/auth/token/refresh**")
-                .permitAll()
+                .authorizeRequests().antMatchers("/api/v1/login**",
+                        "/api/v1/auth/registration",
+                        "/api/v1/auth/token/refresh**",
+                        "/v2/api-docs").permitAll()
                 .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .addFilter(customAuthenticationFilter)
                 .addFilterBefore(new CustomAuthorizationFilter(projectService), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/swagger-resources",
+                "/swagger-resources/**",
+                "/configuration/ui",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/swagger-ui/index.html",
+                "/webjars/**",
+                "/swagger-ui/**",
+                "swagger-ui-custom.html",
+                "/v3/api-docs",
+                "/v3/api-docs/**",
+                "/swagger.json");
     }
 
     @Override
