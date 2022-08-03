@@ -27,6 +27,6 @@ public class OpenApiConfig implements WebMvcConfigurer {
         return new Contact()
                 .name("Vladislav")
                 .email("vlad.snigur.2000@gmail.com")
-                .url("https://github.com/Or1gn");
+                .url("https://github.com/Or1gn/upgraded-to-do-list");
     }
 }
