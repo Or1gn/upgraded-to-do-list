@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS task(
     id BIGSERIAL PRIMARY KEY NOT NULL,
     text TEXT,
     date_of_deadline TIMESTAMP,
+    is_date_expired BOOLEAN,
     priority_id BIGINT REFERENCES priority(id),
     project_id BIGINT REFERENCES project(id) NOT NULL
 );

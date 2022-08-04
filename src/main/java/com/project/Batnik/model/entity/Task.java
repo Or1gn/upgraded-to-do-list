@@ -20,6 +20,9 @@ public class Task {
     @Column(name = "date_of_deadline")
     private Timestamp dateOfDeadline;
 
+    @Column(name = "is_date_expired")
+    private Boolean isDateExpired;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "priority_id", referencedColumnName = "id")
     private Priority priority;

@@ -12,14 +12,19 @@ import com.project.Batnik.repository.TaskRepository;
 import com.project.Batnik.util.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class TaskService {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
@@ -48,6 +53,7 @@ public class TaskService {
         task.setProject(projectRepository.findProjectById(id));
         task.setText(taskRQ.getText());
         task.setDateOfDeadline(taskRQ.getDateOfDeadline());
+        task.setIsDateExpired(false);
         taskRepository.save(task);
         addPriorityToTask("High", task.getId());
         return Constants.CREATE_TASK;
@@ -75,5 +81,16 @@ public class TaskService {
         }
         taskRepository.deleteById(id);
         return Constants.TASK_SUCCESSFUL_DELETE;
+    }
+
+    @Scheduled(fixedDelayString = "${fixedDelay.in.milliseconds}")
+    public void isDateExpiredCheck(){
+        List<Task> tasks = taskRepository.findAll();
+        tasks.stream().filter(task -> task.getDateOfDeadline().before(Timestamp.valueOf(LocalDateTime.now())))
+                .map(task -> {
+                    task.setIsDateExpired(true);
+                    return taskRepository.save(task);
+                });
+        log.info("Task status updated");
     }
 }

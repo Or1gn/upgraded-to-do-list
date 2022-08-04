@@ -16,6 +16,7 @@ public class TaskDTO {
 
     private String text;
     private Timestamp dateOfDeadline;
+    private Boolean isDateExpired;
     private String priority;
 
     public TaskDTO getTaskDTO(Task task)
@@ -25,6 +26,7 @@ public class TaskDTO {
         taskDTO.setText(task.getText());
         taskDTO.setDateOfDeadline(task.getDateOfDeadline());
         taskDTO.setPriority(task.getPriority().getPriorityName());
+        taskDTO.setIsDateExpired(task.getIsDateExpired());
 
         return taskDTO;
     }
